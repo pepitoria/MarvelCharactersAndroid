@@ -24,12 +24,41 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    flavorDimensions "environments"
+
+    productFlavors {
+        production {
+            // for this to work you need to set something like
+            // MARVEL_APP_CLIENT_ID=blablabla
+            // in your local or global gradle.properties
+            it.buildConfigField 'String', 'MARVEL_CLIENT_ID', "\"$MARVEL_APP_CLIENT_ID\""
+        }
+    }
+
+    def appName
+    if (project.hasProperty("applicationName")) {
+        appName = applicationName
+    } else {
+        appName = parent.name
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            outputFileName = appName + "_" + versionName + "(" + versionCode + ")-" + variant.flavorName + ".apk"
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 }
 
