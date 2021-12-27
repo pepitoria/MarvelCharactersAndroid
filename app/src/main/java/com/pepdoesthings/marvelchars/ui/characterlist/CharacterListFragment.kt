@@ -34,7 +34,9 @@ class CharacterListFragment : BaseFragment() {
     }
 
     fun setupViews() {
-
+        binding.characterList.setOnClickListener {
+            viewModel.getChars()
+        }
     }
 
 }

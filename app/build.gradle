@@ -31,8 +31,11 @@ android {
         production {
             // for this to work you need to set something like
             // MARVEL_APP_CLIENT_ID=blablabla
+            // MARVEL_APP_PRIVATE_KEY=klshfbfskhbsdf
             // in your local or global gradle.properties
             it.buildConfigField 'String', 'MARVEL_CLIENT_ID', "\"$MARVEL_APP_CLIENT_ID\""
+            it.buildConfigField 'String', 'MARVEL_PRIVATE_KEY', "\"$MARVEL_APP_PRIVATE_KEY\""
+            it.buildConfigField 'String', 'BASE_URL', '"https://gateway.marvel.com:443"'
         }
     }
 
@@ -84,6 +87,8 @@ dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:2.9.0"
     implementation "com.squareup.retrofit2:converter-gson:2.9.0"
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.6.0'
+    api 'com.squareup.okhttp3:okhttp:4.6.0'
 
     //Coroutines
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.0'
@@ -94,6 +99,9 @@ dependencies {
 
     // timber
     implementation 'com.jakewharton.timber:timber:5.0.1'
+
+    // preferences
+    implementation 'androidx.preference:preference-ktx:1.1.1'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
