@@ -75,7 +75,13 @@ enum class ItemType(val value: String) {
 data class Thumbnail(
     val path: String,
     val extension: Extension
-)
+) {
+    // https://developer.marvel.com/documentation/images
+
+    fun getSquaredThumbnail(): String {
+        return path + "/standard_medium." + extension
+    }
+}
 
 enum class Extension(val value: String) {
     GIF("gif"),
