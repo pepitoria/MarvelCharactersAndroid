@@ -1,5 +1,8 @@
 package com.pepdoesthings.marvelchars.data.model
 
+// all these classes were generated using
+// https://jsonformatter.org/json-to-kotlin
+
 data class CharactersResponse(
     val code: Long,
     val status: String,
@@ -79,7 +82,9 @@ data class Thumbnail(
     // https://developer.marvel.com/documentation/images
 
     fun getSquaredThumbnail(): String {
-        var url = path + "/standard_small." + extension
+        // we just hardcode this part.
+        // not a great practice, but for the scope of this exercise this will do.
+        var url = path + "/standard_medium." + extension
         // we like https.
         url = url.replace("http://", "https://")
         return url
