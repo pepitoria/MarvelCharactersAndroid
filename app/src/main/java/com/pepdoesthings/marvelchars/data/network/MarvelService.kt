@@ -10,6 +10,10 @@ import javax.inject.Inject
 
 class MarvelService @Inject constructor(private val api: MarvelApiClient) {
 
+    companion object {
+        const val PAGE_SIZE = 100
+    }
+
     suspend fun getCharacters(): CharactersResponse? {
         return withContext(Dispatchers.IO) {
             /*
@@ -28,7 +32,9 @@ class MarvelService @Inject constructor(private val api: MarvelApiClient) {
             val hash =
                 md5(timestamp + BuildConfig.MARVEL_PRIVATE_KEY + BuildConfig.MARVEL_CLIENT_ID).toHex()
 
-            val response = api.getCharacters(BuildConfig.MARVEL_CLIENT_ID, timestamp, hash)
+            // we will be using offset param for pagination, for now, just 0 to retrieve the first page.
+            val response =
+                api.getCharacters(BuildConfig.MARVEL_CLIENT_ID, timestamp, hash, PAGE_SIZE, 0)
 
             response.body()
         }
