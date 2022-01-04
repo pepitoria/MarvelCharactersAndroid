@@ -7,8 +7,8 @@ import javax.inject.Inject
 class MarvelRepository @Inject constructor(
     private val api: MarvelService
 ) {
-    suspend fun getCharacters(): CharactersResponse? {
-        return api.getCharacters()
+    suspend fun getCharacters(search: String): CharactersResponse? {
+        return api.getCharacters(search)
     }
 
     suspend fun getCharacterDetail(charId: Long): CharactersResponse? {

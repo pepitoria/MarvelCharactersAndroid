@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -38,7 +39,7 @@ class CharacterListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupViews()
-        viewModel.getChars()
+        viewModel.getChars("")
     }
 
     fun setupViews() {
@@ -56,8 +57,16 @@ class CharacterListFragment : BaseFragment() {
         })
 
         viewModel.marvelCharacters.observe(this, Observer { marvelCharacters ->
-            charactersAdapter.addCharacters(marvelCharacters)
+            charactersAdapter.showCharacters(marvelCharacters)
         })
+
+        binding.searchBar.setOnEditorActionListener { textView, actionId, keyEvent ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                viewModel.getChars(binding.searchBar.text.toString())
+                return@setOnEditorActionListener true
+            }
+            false
+        }
     }
 
     private fun adapterOnClick(character: MarvelCharacter) {

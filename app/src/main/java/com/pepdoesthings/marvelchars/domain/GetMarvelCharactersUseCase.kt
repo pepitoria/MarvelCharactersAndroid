@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetMarvelCharactersUseCase @Inject constructor(
     private val repository: MarvelRepository
 ) {
-    suspend operator fun invoke() = MarvelCharacters.mapFrom(repository.getCharacters())
+    suspend operator fun invoke(search: String) = MarvelCharacters.mapFrom(repository.getCharacters(search))
 }

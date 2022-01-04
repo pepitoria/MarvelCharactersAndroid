@@ -61,7 +61,8 @@ class CharactersAdapter(
         holder.bind(character)
     }
 
-    fun addCharacters(marvelCharacters: MarvelCharacters) {
+    fun showCharacters(marvelCharacters: MarvelCharacters) {
+        charList.clear()
         charList.addAll(marvelCharacters.allCharacters)
         notifyDataSetChanged()
     }

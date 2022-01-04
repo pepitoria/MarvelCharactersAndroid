@@ -17,10 +17,10 @@ class CharacterListViewModel @Inject constructor(
     val isLoading = MutableLiveData<Boolean>()
     val marvelCharacters = MutableLiveData<MarvelCharacters>()
 
-    fun getChars() {
+    fun getChars(search: String) {
         viewModelScope.launch {
             isLoading.postValue(true)
-            val result = getMarvelCharactersUseCase()
+            val result = getMarvelCharactersUseCase(search)
             isLoading.postValue(false)
             marvelCharacters.postValue(result)
         }

@@ -4,6 +4,7 @@ import com.pepdoesthings.marvelchars.BuildConfig
 import com.pepdoesthings.marvelchars.data.model.CharactersResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.Response
 import java.nio.charset.StandardCharsets.UTF_8
 import java.security.MessageDigest
 import javax.inject.Inject
@@ -27,14 +28,38 @@ class MarvelService @Inject constructor(private val api: MarvelApiClient) {
         }
     }
 
-    suspend fun getCharacters(): CharactersResponse? {
+    suspend fun getCharacters(search: String): CharactersResponse? {
         return withContext(Dispatchers.IO) {
             val timestamp = getTimestamp()
             val hash = getHash(timestamp)
 
-            // we will be using offset param for pagination, for now, just 0 to retrieve the first page.
-            val response =
-                api.getCharacters(BuildConfig.MARVEL_CLIENT_ID, timestamp, hash, PAGE_SIZE, 0)
+            val response: Response<CharactersResponse>
+
+            if (search.trim().isEmpty()) {
+                // No search
+                response =
+                    api.getCharacters(
+                        BuildConfig.MARVEL_CLIENT_ID,
+                        timestamp,
+                        hash,
+                        PAGE_SIZE,
+                        // we will be using offset param for pagination, for now, just 0 to retrieve the first page.
+                        0
+                    )
+            } else {
+                // search
+                response =
+                    api.getCharacters(
+                        BuildConfig.MARVEL_CLIENT_ID,
+                        timestamp,
+                        hash,
+                        PAGE_SIZE,
+                        // we will be using offset param for pagination, for now, just 0 to retrieve the first page.
+                        0,
+                        search
+                    )
+            }
+
 
             response.body()
         }

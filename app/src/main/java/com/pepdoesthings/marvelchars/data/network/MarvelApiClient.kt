@@ -17,6 +17,15 @@ interface MarvelApiClient {
         @Query("offset") offset: Int
     ): Response<CharactersResponse>
 
+    @GET("/v1/public/characters")
+    suspend fun getCharacters(
+        @Query("apikey") apiKey: String,
+        @Query("ts") timestamp: String,
+        @Query("hash") hash: String,
+        @Query("limit") limit: Int,
+        @Query("offset") offset: Int,
+        @Query("nameStartsWith") nameStart: String
+    ): Response<CharactersResponse>
 
     @GET("/v1/public/characters/{characterId}")
     suspend fun getCharacterById(
