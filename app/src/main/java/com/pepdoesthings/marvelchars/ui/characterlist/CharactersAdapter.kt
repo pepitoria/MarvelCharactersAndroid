@@ -41,7 +41,9 @@ class CharactersAdapter(
             Picasso.get()
                 .load(character.thumbnail)
                 .placeholder(R.mipmap.no_image_placeholder)
-                .into(thumbnail);
+                .fit()
+                .into(thumbnail)
+
         }
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////

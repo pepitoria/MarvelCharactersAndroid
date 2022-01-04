@@ -74,25 +74,15 @@ enum class ItemType(val value: String) {
 
 data class Thumbnail(
     val path: String,
-    val extension: Extension
+    val extension: String
 ) {
     // https://developer.marvel.com/documentation/images
 
     fun getSquaredThumbnail(): String {
-        return path + "/standard_medium." + extension
-    }
-}
-
-enum class Extension(val value: String) {
-    GIF("gif"),
-    Jpg("jpg");
-
-    companion object {
-        public fun fromValue(value: String): Extension = when (value) {
-            "gif" -> GIF
-            "jpg" -> Jpg
-            else -> throw IllegalArgumentException()
-        }
+        var url = path + "/standard_small." + extension
+        // we like https.
+        url = url.replace("http://", "https://")
+        return url
     }
 }
 
