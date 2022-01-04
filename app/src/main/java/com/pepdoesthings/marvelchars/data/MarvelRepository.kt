@@ -10,4 +10,8 @@ class MarvelRepository @Inject constructor(
     suspend fun getCharacters(): CharactersResponse? {
         return api.getCharacters()
     }
+
+    suspend fun getCharacterDetail(charId: Long): CharactersResponse? {
+        return api.getCharacterDetail(charId)
+    }
 }

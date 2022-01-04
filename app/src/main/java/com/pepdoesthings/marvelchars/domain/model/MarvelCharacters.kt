@@ -18,7 +18,10 @@ data class MarvelCharacters(
                     id = char.id,
                     name = char.name,
                     description = char.description,
-                    thumbnail = char.thumbnail.getSquaredThumbnail()
+                    thumbnail = char.thumbnail.getSquaredThumbnail(),
+                    image = char.thumbnail.getSquaredImage(),
+                    knowMoreUrl = char.getKnowMoreUrl(),
+                    comicsUrl = char.getComicsUrl()
                 )
 
                 list.add(mappedChar)
@@ -34,5 +37,8 @@ data class MarvelCharacter(
     val id: Long,
     val name: String,
     val description: String,
-    val thumbnail: String
+    val thumbnail: String,
+    val image: String,
+    val knowMoreUrl: String,
+    val comicsUrl: String
 )

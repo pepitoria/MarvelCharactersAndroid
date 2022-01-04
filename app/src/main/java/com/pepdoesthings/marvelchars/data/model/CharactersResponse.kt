@@ -33,7 +33,17 @@ data class Result(
     val stories: Stories,
     val events: Comics,
     val urls: List<URL>
-)
+) {
+    fun getKnowMoreUrl(): String {
+        val url = urls.filter { url -> url.type == "detail" }.single()
+        return url.url
+    }
+
+    fun getComicsUrl(): String {
+        val url = urls.filter { url -> url.type == "comiclink" }.single()
+        return url.url
+    }
+}
 
 data class Comics(
     val available: Long,
@@ -57,23 +67,8 @@ data class Stories(
 data class StoriesItem(
     val resourceURI: String,
     val name: String,
-    val type: ItemType
+    val type: String
 )
-
-enum class ItemType(val value: String) {
-    Cover("cover"),
-    Empty(""),
-    InteriorStory("interiorStory");
-
-    companion object {
-        public fun fromValue(value: String): ItemType = when (value) {
-            "cover" -> Cover
-            "" -> Empty
-            "interiorStory" -> InteriorStory
-            else -> throw IllegalArgumentException()
-        }
-    }
-}
 
 data class Thumbnail(
     val path: String,
@@ -89,24 +84,18 @@ data class Thumbnail(
         url = url.replace("http://", "https://")
         return url
     }
+
+    fun getSquaredImage(): String {
+        // we just hardcode this part.
+        // not a great practice, but for the scope of this exercise this will do.
+        var url = path + "/standard_fantastic." + extension
+        // we like https.
+        url = url.replace("http://", "https://")
+        return url
+    }
 }
 
 data class URL(
-    val type: URLType,
+    val type: String,
     val url: String
 )
-
-enum class URLType(val value: String) {
-    Comiclink("comiclink"),
-    Detail("detail"),
-    Wiki("wiki");
-
-    companion object {
-        public fun fromValue(value: String): URLType = when (value) {
-            "comiclink" -> Comiclink
-            "detail" -> Detail
-            "wiki" -> Wiki
-            else -> throw IllegalArgumentException()
-        }
-    }
-}

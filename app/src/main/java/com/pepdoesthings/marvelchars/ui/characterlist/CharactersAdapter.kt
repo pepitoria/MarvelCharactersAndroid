@@ -24,7 +24,7 @@ class CharactersAdapter(
         RecyclerView.ViewHolder(itemView) {
         private val thumbnail: ImageView = itemView.findViewById(R.id.thumbnail)
         private val name: TextView = itemView.findViewById(R.id.characterName)
-        private val character: MarvelCharacter? = null
+        private var character: MarvelCharacter? = null
 
         init {
             itemView.setOnClickListener {
@@ -34,12 +34,14 @@ class CharactersAdapter(
             }
         }
 
-        fun bind(character: MarvelCharacter) {
-            Timber.d("binding char: ${character.name} with thumbnail ${character.thumbnail}")
-            name.text = character.name
+        fun bind(char: MarvelCharacter) {
+            this.character = char
+
+            Timber.d("binding char: ${char.name} with thumbnail ${char.thumbnail}")
+            name.text = char.name
 
             Picasso.get()
-                .load(character.thumbnail)
+                .load(char.thumbnail)
                 .placeholder(R.mipmap.no_image_placeholder)
                 .fit()
                 .into(thumbnail)

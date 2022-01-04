@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">MarvelChars</string>
+    <string name="app_name">Marvel Wiki App</string>
+
+    <string name="would_you_like_to_know_more">Would you like to know more?</string>
+    <string name="character_comics">%1$s comics</string>
+    <string name="loading">Loading...</string>
 </resources>

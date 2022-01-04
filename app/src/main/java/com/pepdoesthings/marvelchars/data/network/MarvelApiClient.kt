@@ -20,9 +20,9 @@ interface MarvelApiClient {
 
     @GET("/v1/public/characters/{characterId}")
     suspend fun getCharacterById(
+        @Path("characterId") characterId: Long,
         @Query("apikey") apiKey: String,
         @Query("ts") timestamp: String,
-        @Query("hash") hash: String,
-        @Path("characterId") characterId: String
-    ): Response<String>
+        @Query("hash") hash: String
+    ): Response<CharactersResponse>
 }
