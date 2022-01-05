@@ -1,12 +1,16 @@
 package com.pepdoesthings.marvelchars.domain.model
 
+import android.os.Parcelable
 import com.pepdoesthings.marvelchars.data.model.CharactersResponse
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class MarvelCharacters(
     val allCharacters: List<MarvelCharacter>
-) {
+) : Parcelable {
 
     companion object {
+        const val KEY = "com.pepdoesthings.marvelchars.domain.model.MarvelCharacters"
 
         fun mapFrom(charactersResponse: CharactersResponse?): MarvelCharacters {
 
@@ -33,6 +37,7 @@ data class MarvelCharacters(
     }
 }
 
+@Parcelize
 data class MarvelCharacter(
     val id: Long,
     val name: String,
@@ -41,4 +46,4 @@ data class MarvelCharacter(
     val image: String,
     val knowMoreUrl: String,
     val comicsUrl: String
-)
+) : Parcelable

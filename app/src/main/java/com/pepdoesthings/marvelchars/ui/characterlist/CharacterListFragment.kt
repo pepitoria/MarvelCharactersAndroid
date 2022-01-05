@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.pepdoesthings.marvelchars.R
 import com.pepdoesthings.marvelchars.databinding.CharacterListFragmentBinding
 import com.pepdoesthings.marvelchars.domain.model.MarvelCharacter
+import com.pepdoesthings.marvelchars.domain.model.MarvelCharacters
 import com.pepdoesthings.marvelchars.ui.base.BaseFragment
 import com.pepdoesthings.marvelchars.ui.characterdetail.CharacterDetailFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,9 +38,11 @@ class CharacterListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupViews()
-        viewModel.getChars("")
+
+        val firstCall = activity?.intent?.getParcelableExtra<MarvelCharacters>(MarvelCharacters.KEY)
+        viewModel.setFirstCall(firstCall)
+
     }
 
     fun setupViews() {

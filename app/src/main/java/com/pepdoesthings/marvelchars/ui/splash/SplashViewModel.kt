@@ -1,4 +1,4 @@
-package com.pepdoesthings.marvelchars.ui.characterlist
+package com.pepdoesthings.marvelchars.ui.splash
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,24 +10,17 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CharacterListViewModel @Inject constructor(
+class SplashViewModel @Inject constructor(
     private val getMarvelCharactersUseCase: GetMarvelCharactersUseCase
 ) : ViewModel() {
 
     val isLoading = MutableLiveData<Boolean>()
     val marvelCharacters = MutableLiveData<MarvelCharacters>()
 
-    fun setFirstCall(firstCall: MarvelCharacters?) {
-        firstCall?.let {
-            marvelCharacters.postValue(it)
-        }
-
-    }
-
-    fun getChars(search: String) {
+    fun getChars() {
         viewModelScope.launch {
             isLoading.postValue(true)
-            val result = getMarvelCharactersUseCase(search)
+            val result = getMarvelCharactersUseCase("")
             isLoading.postValue(false)
             marvelCharacters.postValue(result)
         }
