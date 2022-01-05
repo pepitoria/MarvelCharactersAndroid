@@ -1,6 +1,6 @@
 package com.pepdoesthings.marvelchars.domain
 
-import com.pepdoesthings.marvelchars.data.MarvelRepository
+import com.pepdoesthings.marvelchars.data.repository.MarvelRepository
 import com.pepdoesthings.marvelchars.domain.model.MarvelCharacters
 import javax.inject.Inject
 
