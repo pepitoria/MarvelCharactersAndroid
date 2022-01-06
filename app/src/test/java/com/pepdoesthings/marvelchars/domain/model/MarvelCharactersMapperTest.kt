@@ -1,14 +1,14 @@
-package com.pepdoesthings.marvelchars.domain
+package com.pepdoesthings.marvelchars.domain.model
 
 import com.google.common.truth.Truth.assertThat
 import com.pepdoesthings.marvelchars.data.FakeMarvelRepository
 import com.pepdoesthings.marvelchars.data.model.CharactersResponse
-import com.pepdoesthings.marvelchars.domain.model.MarvelCharacters
+import com.pepdoesthings.marvelchars.domain.GetMarvelCharactersUseCase
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
 import org.junit.Test
 
-class GetMarvelCharactersUseCaseTest {
+class MarvelCharactersMapperTest {
 
     private lateinit var getMarvelCharactersUseCase: GetMarvelCharactersUseCase
     private lateinit var fakeRepository: FakeMarvelRepository
