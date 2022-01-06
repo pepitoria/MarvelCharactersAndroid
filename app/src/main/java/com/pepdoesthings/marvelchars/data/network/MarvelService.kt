@@ -5,6 +5,7 @@ import com.pepdoesthings.marvelchars.data.model.CharactersResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
+import java.lang.Exception
 import java.nio.charset.StandardCharsets.UTF_8
 import java.security.MessageDigest
 import javax.inject.Inject
@@ -28,6 +29,7 @@ class MarvelService @Inject constructor(private val api: MarvelApiClient) {
         }
     }
 
+    @Throws(MarvelNetworkException::class)
     suspend fun getCharacters(search: String): CharactersResponse? {
         return withContext(Dispatchers.IO) {
             val timestamp = getTimestamp()
@@ -60,8 +62,12 @@ class MarvelService @Inject constructor(private val api: MarvelApiClient) {
                     )
             }
 
+            if (response.isSuccessful) {
+                response.body()
+            } else {
+                throw MarvelNetworkException(response.code(), response.message())
+            }
 
-            response.body()
         }
     }
 
