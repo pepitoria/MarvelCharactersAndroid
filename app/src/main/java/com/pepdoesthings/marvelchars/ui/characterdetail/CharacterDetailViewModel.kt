@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pepdoesthings.marvelchars.data.network.MarvelNetworkException
+import com.pepdoesthings.marvelchars.data.model.MarvelError
 import com.pepdoesthings.marvelchars.domain.GetMarvelCharacterDetailUseCase
 import com.pepdoesthings.marvelchars.domain.model.MarvelCharacters
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,23 +22,21 @@ class CharacterDetailViewModel @Inject constructor(
 
     val isLoading = MutableLiveData<Boolean>()
     val marvelCharacter = MutableLiveData<MarvelCharacters>()
-    val apiError = MutableLiveData<MarvelNetworkException>()
+    val apiError = MutableLiveData<MarvelError>()
 
     fun getChar(charId: Long) {
         viewModelScope.launch {
-            try {
-                isLoading.postValue(true)
-                val result = getMarvelCharacterDetailUseCase(charId)
-                isLoading.postValue(false)
-                result.let {
-                    marvelCharacter.postValue(it)
-                }
-            } catch (mEx: MarvelNetworkException) {
-                Timber.e("MarvelNetworkException(${mEx.code}, ${mEx.msg})")
-                isLoading.postValue(false)
-                apiError.postValue(mEx)
-            }
+            isLoading.postValue(true)
+            val result = getMarvelCharacterDetailUseCase(charId)
+            isLoading.postValue(false)
 
+            if (result.marvelError != null) {
+                // there is an error
+                apiError.postValue(result.marvelError as MarvelError)
+            } else {
+                // no error
+                marvelCharacter.postValue(result)
+            }
         }
     }
 

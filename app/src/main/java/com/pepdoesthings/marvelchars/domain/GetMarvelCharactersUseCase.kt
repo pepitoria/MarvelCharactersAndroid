@@ -1,9 +1,7 @@
 package com.pepdoesthings.marvelchars.domain
 
-import com.pepdoesthings.marvelchars.data.network.MarvelNetworkException
 import com.pepdoesthings.marvelchars.data.repository.MarvelRepository
 import com.pepdoesthings.marvelchars.domain.model.MarvelCharacters
-import timber.log.Timber
 import javax.inject.Inject
 
 class GetMarvelCharactersUseCase @Inject constructor(

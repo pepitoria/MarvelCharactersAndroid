@@ -1,17 +1,44 @@
 package com.pepdoesthings.marvelchars.data.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 // all these classes were generated using
 // https://jsonformatter.org/json-to-kotlin
 
 data class CharactersResponse(
+    // custom error class
+    var error: MarvelError? = null,
+    val code: Long?,
+    val status: String?,
+    val copyright: String?,
+    val attributionText: String?,
+    val attributionHTML: String?,
+    val etag: String?,
+    val data: Data?
+) {
+    companion object {
+        fun getWithError(code: Int, msg: String): CharactersResponse {
+            return CharactersResponse(
+                MarvelError(-1, "No Internet Connection"),
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null
+            )
+        }
+    }
+}
+
+// custom error class
+@Parcelize
+data class MarvelError(
     val code: Long,
-    val status: String,
-    val copyright: String,
-    val attributionText: String,
-    val attributionHTML: String,
-    val etag: String,
-    val data: Data
-)
+    val msg: String
+) : Parcelable
 
 data class Data(
     val offset: Long,

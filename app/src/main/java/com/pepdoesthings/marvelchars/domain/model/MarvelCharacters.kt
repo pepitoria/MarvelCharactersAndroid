@@ -2,11 +2,13 @@ package com.pepdoesthings.marvelchars.domain.model
 
 import android.os.Parcelable
 import com.pepdoesthings.marvelchars.data.model.CharactersResponse
+import com.pepdoesthings.marvelchars.data.model.MarvelError
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class MarvelCharacters(
-    val allCharacters: List<MarvelCharacter>
+    val allCharacters: List<MarvelCharacter>,
+    var marvelError: MarvelError?
 ) : Parcelable {
 
     companion object {
@@ -16,6 +18,10 @@ data class MarvelCharacters(
 
             val list: MutableList<MarvelCharacter> = mutableListOf()
 
+            //in case of error.
+            charactersResponse?.error?.let {
+                return MarvelCharacters(list, it)
+            }
 
             charactersResponse?.data?.results?.forEach { char ->
                 val mappedChar = MarvelCharacter(
@@ -31,7 +37,7 @@ data class MarvelCharacters(
                 list.add(mappedChar)
             }
 
-            return MarvelCharacters(list)
+            return MarvelCharacters(list, null)
 
         }
     }
@@ -45,5 +51,6 @@ data class MarvelCharacter(
     val thumbnail: String,
     val image: String,
     val knowMoreUrl: String,
-    val comicsUrl: String
-) : Parcelable
+    val comicsUrl: String,
+
+    ) : Parcelable

@@ -1,5 +1,6 @@
 package com.pepdoesthings.marvelchars.data.network
 
+import android.content.Context
 import com.pepdoesthings.marvelchars.BuildConfig
 import com.pepdoesthings.marvelchars.data.model.CharactersResponse
 import kotlinx.coroutines.Dispatchers
@@ -8,33 +9,49 @@ import retrofit2.Response
 import java.nio.charset.StandardCharsets.UTF_8
 import java.security.MessageDigest
 import javax.inject.Inject
+import android.net.NetworkInfo
 
-class MarvelService @Inject constructor(private val api: MarvelApiClient) {
+import android.net.ConnectivityManager
+import com.pepdoesthings.marvelchars.data.model.MarvelError
+import dagger.hilt.android.qualifiers.ApplicationContext
+
+
+class MarvelService @Inject constructor(
+    @ApplicationContext val appContext: Context,
+    private val api: MarvelApiClient
+) {
 
     companion object {
         const val PAGE_SIZE = 100
     }
 
-    @Throws(MarvelNetworkException::class)
     suspend fun getCharacterDetail(charId: Long): CharactersResponse? {
+
+        if (!isConnected()) {
+            CharactersResponse.getWithError(-1, "No Internet Connection")
+        }
+
         return withContext(Dispatchers.IO) {
+
             val timestamp = getTimestamp()
             val hash = getHash(timestamp)
 
-            // we will be using offset param for pagination, for now, just 0 to retrieve the first page.
             val response =
                 api.getCharacterById(charId, BuildConfig.MARVEL_CLIENT_ID, timestamp, hash)
 
             if (response.isSuccessful) {
                 response.body()
             } else {
-                throw MarvelNetworkException(response.code(), response.message())
+                CharactersResponse.getWithError(response.code(), response.message())
             }
         }
     }
 
-    @Throws(MarvelNetworkException::class)
     suspend fun getCharacters(search: String): CharactersResponse? {
+        if (!isConnected()) {
+            return CharactersResponse.getWithError(-1, "No Internet Connection")
+        }
+
         return withContext(Dispatchers.IO) {
             val timestamp = getTimestamp()
             val hash = getHash(timestamp)
@@ -69,10 +86,17 @@ class MarvelService @Inject constructor(private val api: MarvelApiClient) {
             if (response.isSuccessful) {
                 response.body()
             } else {
-                throw MarvelNetworkException(response.code(), response.message())
+                CharactersResponse.getWithError(response.code(), response.message())
             }
 
         }
+    }
+
+    fun isConnected(): Boolean {
+        val connectivityManager =
+            appContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = connectivityManager.activeNetworkInfo
+        return netInfo != null && netInfo.isConnected
     }
 
     /*
