@@ -16,5 +16,7 @@ Design wise, the app could be much better.
 
 ## Tests: junit and android instrumentation tests.
 
-    - **junit:** just showcasing how could some logic be tested. It does not make a lot of sense becase this app does not have a lot of logic. 
-    - **Android instrumentation tests:** junit tests to test api calls and the code that handle the response to the marvel api.
+- **junit:** just showcasing how could some logic be tested. It does not make a lot of sense becase
+  this app does not have a lot of logic.
+- **Android instrumentation tests:** junit tests to test api calls and the code that handle the
+  response to the marvel api.
