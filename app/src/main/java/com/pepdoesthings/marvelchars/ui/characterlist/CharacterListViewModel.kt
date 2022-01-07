@@ -3,6 +3,7 @@ package com.pepdoesthings.marvelchars.ui.characterlist
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pepdoesthings.marvelchars.data.network.MarvelNetworkException
 import com.pepdoesthings.marvelchars.domain.GetMarvelCharactersUseCase
 import com.pepdoesthings.marvelchars.domain.model.MarvelCharacters
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +17,7 @@ class CharacterListViewModel @Inject constructor(
 
     val isLoading = MutableLiveData<Boolean>()
     val marvelCharacters = MutableLiveData<MarvelCharacters>()
+    val apiError = MutableLiveData<MarvelNetworkException>()
 
     fun setFirstCall(firstCall: MarvelCharacters?) {
         firstCall?.let {
@@ -26,10 +28,15 @@ class CharacterListViewModel @Inject constructor(
 
     fun getChars(search: String) {
         viewModelScope.launch {
-            isLoading.postValue(true)
-            val result = getMarvelCharactersUseCase(search)
-            isLoading.postValue(false)
-            marvelCharacters.postValue(result)
+            try {
+                isLoading.postValue(true)
+                val result = getMarvelCharactersUseCase(search)
+                isLoading.postValue(false)
+                marvelCharacters.postValue(result)
+            } catch (mEx: MarvelNetworkException) {
+                isLoading.postValue(false)
+                apiError.postValue(mEx)
+            }
         }
     }
 }

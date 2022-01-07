@@ -1,17 +1,13 @@
 package com.pepdoesthings.marvelchars.ui.characterdetail
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.pepdoesthings.marvelchars.R
-import com.pepdoesthings.marvelchars.data.model.CharactersResponse
-import com.pepdoesthings.marvelchars.data.model.Result
 import com.pepdoesthings.marvelchars.databinding.CharacterDetailFragmentBinding
 import com.pepdoesthings.marvelchars.domain.model.MarvelCharacters
 import com.pepdoesthings.marvelchars.ui.base.BaseFragment
@@ -67,6 +63,17 @@ class CharacterDetailFragment : BaseFragment() {
             } else {
                 binding.loading.visibility = View.GONE
             }
+        })
+        viewModel.apiError.observe(this, Observer { error ->
+            // here we would just let the user know there has been an error. Design wise, it could be better
+            Toast.makeText(
+                activity,
+                "Network Error${error.code}(): ${error.msg}",
+                Toast.LENGTH_LONG
+            ).show()
+
+            activity?.supportFragmentManager?.popBackStack()
+
         })
 
         viewModel.marvelCharacter.observe(this, Observer { marvelCharacter ->

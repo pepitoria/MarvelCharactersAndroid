@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -58,9 +59,26 @@ class CharacterListFragment : BaseFragment() {
                 binding.loading.visibility = View.GONE
             }
         })
+        viewModel.apiError.observe(this, Observer { error ->
+            // here we would just let the user know there has been an error. Design wise, it could be better
+            binding.errorMessage.visibility = View.VISIBLE
+            binding.errorMessage.text =
+                getString(R.string.home_error, error.code.toString(), error.msg)
+            binding.charactersRecyclerView.visibility = View.GONE
 
+        })
         viewModel.marvelCharacters.observe(this, Observer { marvelCharacters ->
-            charactersAdapter.showCharacters(marvelCharacters)
+            if (marvelCharacters.allCharacters.isEmpty()) {
+                binding.errorMessage.visibility = View.VISIBLE
+                binding.charactersRecyclerView.visibility = View.GONE
+                binding.errorMessage.text =
+                    getString(R.string.no_results, binding.searchBar.text.toString())
+
+            } else {
+                binding.errorMessage.visibility = View.GONE
+                binding.charactersRecyclerView.visibility = View.VISIBLE
+                charactersAdapter.showCharacters(marvelCharacters)
+            }
         })
 
         binding.searchBar.setOnEditorActionListener { textView, actionId, keyEvent ->
