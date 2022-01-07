@@ -21,6 +21,10 @@ UI Design wise, the app could be much better.
 - **Android instrumentation tests:** junit tests to test api calls and the code that handle the
   response to the marvel api.
 
+## Signing and app Generation
+
+Could be done in gradle/command line. For now I'm using the wizard in Android Studio.
+
 ## if you want to run it from code...
 
 You will need to provide client_id and private_key for the marvel app as established in the
