@@ -1,19 +1,16 @@
 package com.pepdoesthings.marvelchars.data.network
 
 import android.content.Context
+import android.net.ConnectivityManager
 import com.pepdoesthings.marvelchars.BuildConfig
 import com.pepdoesthings.marvelchars.data.model.CharactersResponse
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
 import java.nio.charset.StandardCharsets.UTF_8
 import java.security.MessageDigest
 import javax.inject.Inject
-import android.net.NetworkInfo
-
-import android.net.ConnectivityManager
-import com.pepdoesthings.marvelchars.data.model.MarvelError
-import dagger.hilt.android.qualifiers.ApplicationContext
 
 
 class MarvelService @Inject constructor(

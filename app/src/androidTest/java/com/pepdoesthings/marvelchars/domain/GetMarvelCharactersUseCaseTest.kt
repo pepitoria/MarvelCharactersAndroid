@@ -9,16 +9,24 @@ import org.junit.Before
 import org.junit.Test
 import timber.log.Timber
 import kotlin.system.measureTimeMillis
+import android.app.Application
+import androidx.test.InstrumentationRegistry.getTargetContext
+import androidx.test.platform.app.InstrumentationRegistry
+
 
 class GetMarvelCharactersUseCaseTest {
     private lateinit var getMarvelCharactersUseCase: GetMarvelCharactersUseCase
 
     @Before
     fun setup() {
+        val context = InstrumentationRegistry.getInstrumentation().context
         getMarvelCharactersUseCase =
             GetMarvelCharactersUseCase(
                 MarvelRepositoryImpl(
-                    MarvelService(RetrofitModule.provideMarvelApiClient(RetrofitModule.getRetrofit()))
+                    MarvelService(
+                        context,
+                        RetrofitModule.provideMarvelApiClient(RetrofitModule.getRetrofit())
+                    )
                 )
             )
 

@@ -1,5 +1,6 @@
 package com.pepdoesthings.marvelchars.domain
 
+import androidx.test.platform.app.InstrumentationRegistry
 import com.google.common.truth.Truth
 import com.pepdoesthings.marvelchars.data.network.MarvelService
 import com.pepdoesthings.marvelchars.data.network.RetrofitModule
@@ -15,10 +16,14 @@ class GetMarvelCharacterDetailUseCaseTest {
 
     @Before
     fun setUp() {
+        val context = InstrumentationRegistry.getInstrumentation().context
         getMarvelCharacterDetailUseCase =
             GetMarvelCharacterDetailUseCase(
                 MarvelRepositoryImpl(
-                    MarvelService(RetrofitModule.provideMarvelApiClient(RetrofitModule.getRetrofit()))
+                    MarvelService(
+                        context,
+                        RetrofitModule.provideMarvelApiClient(RetrofitModule.getRetrofit())
+                    )
                 )
             )
     }
