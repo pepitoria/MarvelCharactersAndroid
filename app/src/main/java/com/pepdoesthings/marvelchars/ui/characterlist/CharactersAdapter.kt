@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.pepdoesthings.marvelchars.R
+import com.pepdoesthings.marvelchars.databinding.CharacterListItemBinding
 import com.pepdoesthings.marvelchars.domain.model.MarvelCharacter
 import com.pepdoesthings.marvelchars.domain.model.MarvelCharacters
 import com.squareup.picasso.Picasso
@@ -20,10 +21,28 @@ class CharactersAdapter(
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // View holder
-    class MarvelCharacterViewHolder(itemView: View, val onClick: (MarvelCharacter) -> Unit) :
-        RecyclerView.ViewHolder(itemView) {
-        private val thumbnail: ImageView = itemView.findViewById(R.id.thumbnail)
-        private val name: TextView = itemView.findViewById(R.id.characterName)
+    class MarvelCharacterViewHolder(
+        private val binding: CharacterListItemBinding,
+        val onClick: (MarvelCharacter) -> Unit
+    ) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        companion object {
+            fun create(
+                parent: ViewGroup,
+                viewType: Int,
+                onClick: (MarvelCharacter) -> Unit
+            ): MarvelCharacterViewHolder {
+                val binding = CharacterListItemBinding.inflate(
+                    LayoutInflater.from(parent.context),
+                    parent,
+                    false
+                )
+
+                return MarvelCharacterViewHolder(binding, onClick)
+            }
+        }
+
         private var character: MarvelCharacter? = null
 
         init {
@@ -38,22 +57,20 @@ class CharactersAdapter(
             this.character = char
 
             Timber.d("binding char: ${char.name} with thumbnail ${char.thumbnail}")
-            name.text = char.name
+            binding.characterName.text = char.name
 
             Picasso.get()
                 .load(char.thumbnail)
                 .placeholder(R.mipmap.no_image_placeholder)
                 .fit()
-                .into(thumbnail)
+                .into(binding.thumbnail)
 
         }
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarvelCharacterViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.character_list_item, parent, false)
-        return MarvelCharacterViewHolder(view, onClick)
+        return MarvelCharacterViewHolder.create(parent, viewType, onClick)
     }
 
     override fun onBindViewHolder(holder: MarvelCharacterViewHolder, position: Int) {
