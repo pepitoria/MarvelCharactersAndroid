@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -42,11 +41,16 @@ class CharacterListFragment : BaseFragment() {
         setupViews()
 
         val firstCall = activity?.intent?.getParcelableExtra<MarvelCharacters>(MarvelCharacters.KEY)
-        viewModel.setFirstCall(firstCall)
+
+        if (firstCall != null) {
+            viewModel.setFirstCall(firstCall)
+        } else {
+            viewModel.getChars("")
+        }
 
     }
 
-    fun setupViews() {
+    private fun setupViews() {
         val charactersAdapter =
             CharactersAdapter { character -> adapterOnClick(character) }
         binding.charactersRecyclerView.adapter = charactersAdapter
@@ -97,7 +101,7 @@ class CharacterListFragment : BaseFragment() {
         showDetail(detail, detail.getCharacterTag())
     }
 
-    protected fun showDetail(
+    private fun showDetail(
         fragment: Fragment,
         fragmentTag: String
     ) {

@@ -16,11 +16,11 @@ class SplashActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        //the view of this splash activity is handled by the theme background
+
 
         viewModel.marvelCharacters.observe(this, Observer { marvelCharacters ->
-            val intent = Intent(this@SplashActivity, HomeActivity::class.java)
-            intent.putExtra(MarvelCharacters.KEY, marvelCharacters)
-            startActivity(intent)
+            HomeActivity.launch(this@SplashActivity, marvelCharacters)
             finish()
         })
 
